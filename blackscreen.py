@@ -3,9 +3,9 @@ import numpy as np
 
 cap = cv2.VideoCapture(0)
 img = cv2.imread("pink_flowers_background.jpg")
-cv2.imshow("bg",img)
+# cv2.imshow("bg",img)
 
-while (cap.isOpened()):
+while True:
     ret, frame = cap.read()
 
     frame = cv2.resize(frame , (640 , 480))
@@ -14,8 +14,8 @@ while (cap.isOpened()):
     u_black = np.array([104,153,70])
     l_black = np.array([30,30,0])
 
-    hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv,u_black ,l_black)
+    # hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(frame,l_black,u_black )
     res = cv2.bitwise_and(frame,frame,mask=mask)
 
     f= frame - res
@@ -24,7 +24,10 @@ while (cap.isOpened()):
     cv2.imshow("original",frame)
     cv2.imshow("mask magic", f)
 
-    cv2.waitKey(1)  
+    if cv2.waitKey(1) & 0XFF == ord('q'):
+        break
+    
+
 
 
 cap.release() 
